@@ -8,6 +8,19 @@ public class PlayerInput : MonoBehaviour
 
     private Movement movementComponent; 
 
+    // Capitalized the first letter to match C# style!
+    void MoveHorizontal(float currentSpeed)
+    {
+        float moveInput = Input.GetAxis("Horizontal");
+        movementComponent.MoveHorizontal(moveInput, currentSpeed);
+    }
+    
+    // Cleaned up the name slightly to read like a question
+    bool IsJumpLegal()
+    {
+        return Input.GetKeyDown(KeyCode.Space) && movementComponent.isStandingOnGround();
+    }
+    
     void Start()
     {
         movementComponent = GetComponent<Movement>(); 
@@ -15,13 +28,10 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        
-        movementComponent.MoveHorizontal(moveInput, speed);
+        MoveHorizontal(speed);
 
-        if (Input.GetKeyDown(KeyCode.Space) && movementComponent.isStandingOnGround())
+        if (IsJumpLegal())
         {
-            
             movementComponent.Jump(jumpPower);
         }
     }
