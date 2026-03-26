@@ -1,25 +1,25 @@
 using UnityEngine;
 
-public class movement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
-    public int jumpForce = 2;
-    public float moveSpeed = 5f;
-    Rigidbody2D rb;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Transform groundCheck;    
+    public float groundCheckRadius = 0.2f;    
+    public LayerMask groundLayer;   
+    private Rigidbody2D rb; 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void MoveHorizontal(float directionInput, float moveSpeed)
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.linearVelocity = new  Vector2(rb.linearVelocity.x, jumpForce);
-        }  
+        rb.linearVelocity = new Vector2(directionInput * moveSpeed, rb.linearVelocity.y);
+    }
+    public void Jump(float jumpForce)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+    }
+    public bool isStandingOnGround()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 }
